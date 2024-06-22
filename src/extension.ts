@@ -6,10 +6,6 @@ import * as vscode from 'vscode';
 // Your extension is activated the very first time the command is executed
 export function activate(context: vscode.ExtensionContext) {
 
-    // Use the console to output diagnostic information (console.log) and errors (console.error)
-    // This line of code will only be executed once when your extension is activated
-    console.log('Congratulations, your extension "lazygit-vscode" is now active!');
-
     // The command has been defined in the package.json file
     // Now provide the implementation of the command with registerCommand
     // The commandId parameter must match the command field in package.json
@@ -38,7 +34,7 @@ export function activate(context: vscode.ExtensionContext) {
         const exec = require('child_process').exec;
         exec('lazygit --version', (error: any, stdout: any, stderr: any) => {
             if (error) {
-                vscode.window.showErrorMessage('lazygit is not installed');
+                vscode.window.showErrorMessage('lazygit is not installed, please install');
                 return;
             }
         });
@@ -46,9 +42,12 @@ export function activate(context: vscode.ExtensionContext) {
         // open terminal and run lazygit
         const terminal = vscode.window.createTerminal('lazygit-vscode');
         terminal.sendText('lazygit && exit ');
+        terminal.show();
 
-        // move terminal to editor
-        vscode.commands.executeCommand('workbench.action.terminal.moveToEditor');
+        // move terminal to editor area
+        setTimeout(() => {
+            vscode.commands.executeCommand('workbench.action.terminal.moveToEditor');
+        }, 200);
     });
 
     context.subscriptions.push(disposable);
